@@ -1,6 +1,6 @@
 <%@ page contentType = "text/html; charset=euc-kr" %>
 <%@ page import = "java.sql.*" %>
- 
+ <%@ page import = "java.util.Random" %>
  <script type="text/javascript">
 
     function Goback() {
@@ -11,7 +11,7 @@
  
 <%
       request.setCharacterEncoding("euc-kr");
- 
+ 		
       String id = request.getParameter("id");
       String passwd = request.getParameter("passwd");
       String name = request.getParameter("name");
@@ -20,12 +20,16 @@
       String address_Dong = request.getParameter("address_Dong");
       String address_Detail = request.getParameter("address_Detail");
       Timestamp register = new Timestamp(System.currentTimeMillis());
-
+      int pk=0;
       Connection conn = null;
       PreparedStatement pstmt = null;
+      ResultSet rs =null;
+      int n=0;
       // Connection/PreparedStatement/ResultSet ==> interface
- 
-      try
+ 		Random random = new Random();
+    	pk = random.nextInt(10000);
+    	boolean check_pk=false;
+	try
       {
     	  String url = "jdbc:oracle:thin:@localhost:1521:oraknu";
   		String user = "kdhong";
@@ -34,9 +38,33 @@
             Class.forName("oracle.jdbc.driver.OracleDriver");
             conn = DriverManager.getConnection(url, user, pass);
   
+            do
+            {
+	            String sql1 = "select count(*) num from CUSTOMER where C_ID=?";
+	            pstmt = conn.prepareStatement(sql1);
+	            pstmt.setInt(1, pk);
+	    	
+	    		pstmt.executeUpdate();
+	    		rs=pstmt.executeQuery();
+	  		  	while(rs.next()) {
+	    			if(rs.getInt("num") == 1)
+	    			{
+	    				check_pk = true;
+	    				pk = random.nextInt(10000);
+	    			}
+	    			else
+	    			{
+	    				check_pk =false;
+	    			}
+	  		  	}
+	  		  	
+	  		  	rs.close();
+	  		  	pstmt.close();
+            }while(check_pk);
+            
             String sql = "insert into customer values(?,?,?,?,?,?,?,?,?)";
             pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, 3);
+            pstmt.setInt(1, pk);
     		pstmt.setString(2, id);
     		pstmt.setString(3, passwd);
     		pstmt.setString(4, name);
@@ -46,7 +74,7 @@
     		pstmt.setString(8, address_Detail);
     		pstmt.setTimestamp(9, register);
             
-    		pstmt.executeUpdate();
+    		n=pstmt.executeUpdate();
       }catch(Exception e){
             e.printStackTrace();
       }finally{
@@ -58,8 +86,15 @@
 <html>
 <head><title>레코드 삽입(추가)예제</title></head>
 <body>
-      members 테이블에 새로운 레코드를 삽입(추가)했습니다.
-      <input type="button" onclick="Goback()" value="뒤로가기">
+      <script type="text/javascript">
+	if(<%=n%>>0 ){
+		alert("추가되었습니다.");
+		location.href="../Login/index.jsp";
+	}else{
+		alert("추가 실패 id가 같습니다.");
+		history.go(-1);
+	}
+</script>
       
 </body>
 </html>

@@ -7,15 +7,22 @@
 <%
 boolean status=LoginDao.validate(obj);
 if(status){
-	%>
-	<jsp:include page="../CustomerMain/customermainindex.jsp"></jsp:include>
-	<%
-session.setAttribute("session","TRUE");
-
+	String id= obj.getEmail();
+	session.setAttribute("sessionID",id);
+	if(obj.getRadioValue() == 1)	//Á÷¿ø
+	{
+		
+	}
+	else	//°í°´
+	{
+		
+		response.sendRedirect("../CustomerMain/customerm.jsp");
+	}
+	
 }
 else
 {
-out.print("Sorry, email or password error");
+out.print("Sorry, id or password error");
 %>
 <jsp:include page="index.jsp"></jsp:include>
 <%
