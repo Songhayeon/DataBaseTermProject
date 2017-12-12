@@ -16,7 +16,9 @@
 	Connection conn = null;
 	String sql = null;
 	String query = null;
-
+	PreparedStatement pstmt=null;
+	String ALLid = (String)session.getAttribute("sessionID");
+	
 	try {
 		Class.forName("oracle.jdbc.driver.OracleDriver");
 		System.out.println("드라이버 검색 성공!");
@@ -37,8 +39,10 @@
 		try {
 //			conn = DBConnection.getCon();
 			conn.setAutoCommit(false);
-			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("select * from roundsman");
+			pstmt = conn.prepareStatement("select * from roundsman where id=?");
+			pstmt.setString(1,ALLid);
+			System.out.println("id:::: "+ALLid);
+			ResultSet rs = pstmt.executeQuery();
 			
 	%>
 	직원의 정보</br>
@@ -71,7 +75,12 @@
 		</table>
 		
 		</br></br>직원의 전체 배달목록 </br>
-		<%ResultSet rs2 = stmt.executeQuery("select i.name,i.price,i.data, c.name, c.phone, c.cu,c.dong,c.address,d.quantity, d.d_day, d.start_date, d.d_id from delivery d,item i, customer c, roundsman r where d.e_id=r.e_id AND d.c_id=c.c_id AND d.serial_number=i.serial_number "); %>
+		<%
+		pstmt = conn.prepareStatement("select i.name,i.price,i.data, c.name, c.phone, c.cu,c.dong,c.address,d.quantity, d.d_day, d.start_date, d.d_id from delivery d,item i, customer c, roundsman r where d.e_id=r.e_id AND d.c_id=c.c_id AND d.serial_number=i.serial_number AND r.id=?");
+		pstmt.setString(1, ALLid);
+
+		ResultSet rs2 = pstmt.executeQuery();
+	//	ResultSet rs2 = stmt.executeQuery("select i.name,i.price,i.data, c.name, c.phone, c.cu,c.dong,c.address,d.quantity, d.d_day, d.start_date, d.d_id from delivery d,item i, customer c, roundsman r where d.e_id=r.e_id AND d.c_id=c.c_id AND d.serial_number=i.serial_number AND r.id=?"); %>
 		<table border="1">
 		<tr>
 		<td>item</td>
@@ -145,20 +154,22 @@
 		
 		if(category.equals("i.name"))
 		{
-			query = "select i.name,i.price,i.data, c.name, c.phone, c.cu,c.dong,c.address,d.quantity, d.d_day, d.start_date, d.d_id from delivery d,item i, customer c, roundsman r where i.name=? AND d.e_id=r.e_id AND d.c_id=c.c_id AND d.serial_number=i.serial_number";
+			query = "select i.name,i.price,i.data, c.name, c.phone, c.cu,c.dong,c.address,d.quantity, d.d_day, d.start_date, d.d_id from delivery d,item i, customer c, roundsman r where r.id=? AND i.name=? AND d.e_id=r.e_id AND d.c_id=c.c_id AND d.serial_number=i.serial_number";
 		}
 		else if(category.equals("c.name"))
 		{
-			query = "select i.name,i.price,i.data, c.name, c.phone, c.cu,c.dong,c.address,d.quantity, d.d_day, d.start_date, d.d_id from delivery d,item i, customer c, roundsman r where c.name=? AND d.e_id=r.e_id AND d.c_id=c.c_id AND d.serial_number=i.serial_number";
+			query = "select i.name,i.price,i.data, c.name, c.phone, c.cu,c.dong,c.address,d.quantity, d.d_day, d.start_date, d.d_id from delivery d,item i, customer c, roundsman r where r.id=? AND c.name=? AND d.e_id=r.e_id AND d.c_id=c.c_id AND d.serial_number=i.serial_number";
 		}
 		else if(category.equals("c.dong"))
 		{
-			query = "select i.name,i.price,i.data, c.name, c.phone, c.cu,c.dong,c.address,d.quantity, d.d_day, d.start_date, d.d_id from delivery d,item i, customer c, roundsman r where c.dong=? AND d.e_id=r.e_id AND d.c_id=c.c_id AND d.serial_number=i.serial_number";
+			query = "select i.name,i.price,i.data, c.name, c.phone, c.cu,c.dong,c.address,d.quantity, d.d_day, d.start_date, d.d_id from delivery d,item i, customer c, roundsman r where r.id=? AND c.dong=? AND d.e_id=r.e_id AND d.c_id=c.c_id AND d.serial_number=i.serial_number";
 		}
 		
 		System.out.println(target);
-		PreparedStatement pstmt = conn.prepareStatement(query);
-		pstmt.setString(1,target);
+		
+		pstmt = conn.prepareStatement(query);
+		pstmt.setString(1,ALLid);
+		pstmt.setString(2,target);
 		ResultSet rs3 = pstmt.executeQuery();
 
 		%>	
@@ -212,12 +223,14 @@
 		%>
 		</table>
 		<%
+		pstmt.close();
 		rs.close();
 		rs2.close();
 		rs3.close();
+		
 		conn.commit();
 		conn.setAutoCommit(true);
-		stmt.close();
+		
 		conn.close();
 		
 	} catch(Exception e) {
