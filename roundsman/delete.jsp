@@ -35,7 +35,8 @@
 	}
 
 	PreparedStatement pstmt = null;
-	String id = request.getParameter("id");
+	String serial_number = request.getParameter("serial");
+	String c_id = request.getParameter("c_id");
 
 	int n=0;
 
@@ -43,10 +44,11 @@
 
 //		con = DBConnection.getCon();
 
-		sql="delete from delivery where d_id=?";
+		sql="delete from delivery where serial_number =? AND c_id=? ";
 		pstmt = conn.prepareStatement(sql);
-		pstmt.setString(1, id);
-
+		pstmt.setString(1, serial_number);
+		pstmt.setString(2, c_id);
+		
 		n = pstmt.executeUpdate();
 
 		pstmt.close();

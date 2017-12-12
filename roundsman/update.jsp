@@ -11,8 +11,9 @@
 <%
 
 	request.setCharacterEncoding("euc-kr");
-	String id=request.getParameter("id");
-
+	String serial=request.getParameter("serial");
+	String c_id=request.getParameter("c_id");
+		
 	String url = "jdbc:oracle:thin:@localhost:1521:oraknu";
 	String user = "sys as sysdba";
 	String pass = "DBLab012345";
@@ -32,30 +33,27 @@
 
 	try{
 		conn = DriverManager.getConnection(url,user,pass);
-	//	return conn;
 		
 	}catch(SQLException e) {
 		System.err.println("sql error = " + e.getMessage());
 		System.exit(1);
-//		return null;
 	}
 	
 	try{
-		System.out.println(id+'!');
-	//	conn = DBConnection.getCon();
-		sql="select  i.name,i.price,i.data, c.name, c.phone, c.cu,c.dong,c.address,d.quantity, d.d_day, d.start_date, d.d_id from delivery d,item i, customer c, roundsman r where d.e_id=r.e_id AND d.c_id=c.c_id AND d.serial_number=i.serial_number AND d.d_id=? ";
+
+		sql="select i.name,i.price,i.categorize, c.name, c.phone, c.address_gu,c.address_dong,c.address_detail,d.quantity, d.d_day, d.start_date from delivery d,item i, customer c, roundsman r where i.serial_number=? AND c.c_id =? AND d.r_id=r.r_id AND d.c_id=c.c_id AND d.serial_number=i.serial_number";
 
 		pstmt = conn.prepareStatement(sql);
-		pstmt.setString(1, id);
-
+		pstmt.setString(1,serial);
+		pstmt.setString(2,c_id);
 		rs = pstmt.executeQuery();
 		rs.next();
 		
 			String name = rs.getString(1);
 			int price = rs.getInt(2);
-			int i_date = rs.getInt(3);
+			String categorize = rs.getString(3);
 			String c_name = rs.getString(4);
-			int phone = rs.getInt(5);
+			String phone = rs.getString(5);
 			String cu = rs.getString(6);
 			String dong = rs.getString(7);
 			String address = rs.getString(8);
@@ -73,7 +71,10 @@
 		<td><%=c_name%></td>
 	</tr>
 	<tr>
-		<td><input type="hidden" name="d_id" value="<%=id %>"/></td>
+		<td><input type="hidden" name="serial_number" value="<%=serial %>"/></td>
+	</tr>
+	<tr>
+		<td><input type="hidden" name="c_id" value="<%=c_id %>"/></td>
 	</tr>
 	<tr>
 		<td>¾ç</td>
