@@ -6,12 +6,13 @@
 
 <%
 boolean status=LoginDao.validate(obj);
+System.out.println(status);
 if(status){
 	String id= obj.getEmail();
 	session.setAttribute("sessionID",id);
 	if(obj.getRadioValue() == 1)	//Á÷¿ø
 	{
-		
+		response.sendRedirect("../roundsman/sample.jsp");
 	}
 	else	//°í°´
 	{
