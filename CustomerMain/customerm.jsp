@@ -121,6 +121,7 @@
 		<td>수</td>
 		<td>목</td>
 		<td>금</td>
+		<td>금액</td>
 		<td>삭제</td>
 		<td>수정</td>
 	</tr>
@@ -150,7 +151,36 @@
 			int wednesday = 0;
 			int thursday = 0;
 			int friday = 0;
+			int total_p=0;
 			
+			Connection conn_in = null;
+			PreparedStatement pstmt_in = null;
+			ResultSet rs_in=null;
+			int Price=0;
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+		    conn_in = DriverManager.getConnection(url, user, pass);
+			
+		    try
+			{
+	    	  String sql_price = "select PRICE from ITEM where SERIAL_NUMBER=?";
+	    	  pstmt_in = conn_in.prepareStatement(sql_price);
+	    	  pstmt_in.setInt(1, sn);
+	    	  pstmt_in.executeUpdate();
+			  
+	    	  rs_in=pstmt_in.executeQuery();
+			  while(rs_in.next()) {
+				  Price=rs_in.getInt("PRICE");
+				  }
+			    
+			  
+			}catch(Exception e){
+			    e.printStackTrace();
+			}finally{
+			  if(rs_in != null) try { rs_in.close(); } catch(SQLException sqle) {}
+			  if(pstmt_in != null) try { pstmt_in.close(); } catch(SQLException sqle) {}
+			  if(conn_in != null) try { conn_in.close(); } catch(SQLException sqle) {}
+			}
+		    
 			if((dday/10000) ==1)
 			{
 				monday = 1;
@@ -181,6 +211,8 @@
 				dday%=1;
 			}
 			name_item = lis.get(lin.indexOf(Integer.toString(sn)));
+			
+			total_p = Price*quan;
 %>
 	<tr>
 		<td><%=name_item %></td>
@@ -191,6 +223,7 @@
 		<td><%=wednesday %></td>
 		<td><%=thursday %></td>
 		<td><%=friday %></td>
+		<td><%=total_p %></td>
 		<td><a href="customerdelete.jsp?id=<%=sn%>" >삭제</a></td>
 		<td><a href="customerupdate.jsp?id=<%=sn%>&name=<%=(java.net.URLEncoder.encode(name_item,"UTF-8"))%>" >수정</a></td>
 		

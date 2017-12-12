@@ -6,10 +6,11 @@ public class LoginDao {
 		boolean status=false;
 		try{
 			Connection con=ConnectionProvider.getCon();
-			System.out.println(con);
+			
 			if(bean.getRadioValue() == 1)
 			{
-				PreparedStatement ps=con.prepareStatement("select * from roundsman where id=? and passwd=?");
+				//직원 아이디 입력.
+				PreparedStatement ps=con.prepareStatement("select * from ROUNDSMAN where id=? and passwd=?");
 				ps.setString(1,bean.getEmail());
 				ps.setString(2, bean.getPass());
 				ResultSet rs=ps.executeQuery();
