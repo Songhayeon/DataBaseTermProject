@@ -12,7 +12,8 @@
 
 	request.setCharacterEncoding("euc-kr");
 
-	String d_id= request.getParameter("d_id");
+	String serial_number= request.getParameter("serial_number");
+	String c_id= request.getParameter("c_id");
 	String quantity=request.getParameter("quantity");
 	String dong=request.getParameter("dong");
 	String address=request.getParameter("address");
@@ -27,9 +28,10 @@
 	String user = "sys as sysdba";
 	String pass = "DBLab012345";
 	Connection conn = null;
-	String  sql = "update customer Set dong=?, address=?, phone=? where c_id=832";
-	String query = null;
+	String  sql = "update delivery Set quantity=? where serial_number=? AND c_id=?";
+	String  query = "update customer Set address_dong=?, address_detail=?, phone=? where c_id = ?";
 	PreparedStatement pstmt=null;
+	PreparedStatement pstmt2=null;
 	ResultSet rs = null;
 	
 	try {
@@ -42,30 +44,27 @@
 
 	try{
 		conn = DriverManager.getConnection(url,user,pass);
-	//	return conn;
 		
 	}catch(SQLException e) {
 		System.err.println("sql error = " + e.getMessage());
 		System.exit(1);
-//		return null;
 	}
 
 	try{
 
-	//	con = DBConnection.getCon();
-
 		pstmt = conn.prepareStatement(sql);
-
-	//	pstmt.setString(1, quantity);
-
-		pstmt.setString(1, dong);
-
-		pstmt.setString(2, address);
-
-		pstmt.setString(3, phone);
-	//	pstmt.setString(4,d_id);
-	
+		
+		pstmt.setString(1,quantity);
+		pstmt.setString(2, serial_number);
+		pstmt.setString(3, c_id);
 		n = pstmt.executeUpdate();
+		
+		pstmt2 = conn.prepareStatement(query);
+		pstmt2.setString(1, dong);
+		pstmt2.setString(2, address);
+		pstmt2.setString(3, phone);
+		pstmt2.setString(4, c_id);
+		n = pstmt2.executeUpdate();
 		
 		
 		pstmt.close();
