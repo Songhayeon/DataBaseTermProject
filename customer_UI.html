@@ -101,9 +101,9 @@
 		</h1>
 		</div>
 		<div id="body">
-		<td><%=username %> 님 안녕하세요.<a href="modifyinfo.jsp?id=<%=allcid%>"  >정보수정</a> <a href="logout.jsp" >로그아웃</a> </td>
-		<input type="submit" style=font-size:15pt; height:25; value="정보수정" /> 
-		<input type="button" style=font-size:15pt; height:25; onclick="goSubmit()" value="로그아웃">
+		<td><%=username %> hello.<a href="modifyinfo.jsp?id=<%=allcid%>"  >adit</a> <a href="logout.jsp" >logout</a> </td>
+		<input type="submit" style=font-size:15pt; height:25; value="adit" /> 
+		<input type="button" style=font-size:15pt; height:25; onclick="goSubmit()" value="logout">
 		
 		
 		<form action="./Add_Delivery.jsp" method="post">
@@ -112,27 +112,27 @@
             <option><%=lis.get(count)%></option>
         <% } %>
         </select>
-        수량 : <input type = "text" name = "Quantity">
-        <input type="checkbox" name="Day" value="10000"> 월
-        <input type="checkbox" name="Day" value="1000"> 화
-        <input type="checkbox" name="Day" value="100"> 수
-        <input type="checkbox" name="Day" value="10"> 목
-        <input type="checkbox" name="Day" value="1"> 금
+        Quantity : <input type = "text" name = "Quantity">
+        <input type="checkbox" name="Day" value="10000"> Monday
+        <input type="checkbox" name="Day" value="1000"> Tuesday
+        <input type="checkbox" name="Day" value="100"> Wednesday
+        <input type="checkbox" name="Day" value="10"> Thursday
+        <input type="checkbox" name="Day" value="1"> Friday
         <input type = "submit" value="ADD">
 		</form>
-		<h2>주문목록</h2>
-	<table border="1" width="600">
+		<h2>Order List</h2>
+<table border="1" width="600">
 	<tr>
-		<td>상품이름</td>
-		<td>양</td>
-		<td>시작 날짜</td>
-		<td>월</td>
-		<td>화</td>
-		<td>수</td>
-		<td>목</td>
-		<td>금</td>
-		<td>삭제</td>
-		<td>수정</td>
+		<td>Product name</td>
+		<td>Amount</td>
+		<td>Start Date</td>
+		<td>Monday</td>
+		<td>Tuesday</td>
+		<td>Wednesday</td>
+		<td>Thursday</td>
+		<td>Friday</td>
+		<td>Delete</td>
+		<td>Revise</td>
 	</tr>
 	<%
 		//db 에서 회원목록 얻어와 테이블에 출력하기.
@@ -201,8 +201,8 @@
 		<td><%=wednesday %></td>
 		<td><%=thursday %></td>
 		<td><%=friday %></td>
-		<td><a href="customerdelete.jsp?id=<%=sn%>" >삭제</a></td>
-		<td><a href="customerupdate.jsp?id=<%=sn%>&name=<%=(java.net.URLEncoder.encode(name_item,"UTF-8"))%>" >수정</a></td>
+		<td><a href="customerdelete.jsp?id=<%=sn%>" >Delete</a></td>
+		<td><a href="customerupdate.jsp?id=<%=sn%>&name=<%=(java.net.URLEncoder.encode(name_item,"UTF-8"))%>" >Revise</a></td>
 		
 		
 	</tr>
