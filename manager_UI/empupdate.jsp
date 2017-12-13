@@ -59,10 +59,9 @@ String eid = request.getParameter("id");
 			<a href="index.html">better look &amp; better delivery <span>DB
 					Term Project</span></a>
 		</h1>
-		<ul id="navigation">
-			<li class="current"><a href="index.jsp">Home</a></li>
-			<li><a href="index.jsp">About</a></li>
-			<li><a href="index.jsp">Contact</a></li>
+				<ul id="navigation">
+			<li><a href="managerm2.jsp">Item_List</a></li>
+			<li><a href="managerm_item.jsp">Employee List</a></li>
 		</ul>
 	</div>
 	<div id="body">

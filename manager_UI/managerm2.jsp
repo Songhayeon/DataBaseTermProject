@@ -111,19 +111,20 @@
 </form>
 <div id="body">
 <form action="./Add_emp.jsp" method="post">
-        이름 : <input type = "text" name = "name">
-         전화번호 : <input type = "text" name = "phone">
-          동 : <input type = "text" name = "dong">
+        이름 : <input type = "text" name = "name" size=10>
+        
+         전화번호 : <input type = "text" name = "phone" size=10>
+          동 : <input type = "text" name = "dong" size=10>
       
-      <input type = "hidden" name = "BELONG_TO" value="<%=branch_id%>">
+      <input type = "hidden" size=10 name = "BELONG_TO" value="<%=branch_id%>">
            
-           구 : <input type = "text" name = "gu">
-           ID : <input type = "text" name = "id">
-           PW : <input type = "text" name = "pw">
+           구 : <input type = "text" name = "gu"size=10>
+           ID : <input type = "text" name = "id"size=10>
+           PW : <input type = "text" name = "pw"size=10>
            
         <input type = "submit" value="ADD">
 </form>
-	<h3>직원의 목록</h3>
+	<h2>직원의 목록</h2>
 	<table border="1" width="600">
       <tr>
       

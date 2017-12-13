@@ -111,11 +111,11 @@
 </form>
 <div id="body">
 <form action="./Add_Item.jsp" method="post">
-        SN: <input type = "text" name = "serial">
-        품명 : <input type = "text" name = "name">
-         카테고리 : <input type = "text" name = "cate">
-          가격 : <input type = "text" name = "price">
-           유통기한 : <input type = "text" name = "d_d">
+        SN: <input type = "text" name = "serial" size=10>
+        품명 : <input type = "text" name = "name" size=10>
+         카테고리 : <input type = "text" name = "cate" size=10>
+          가격 : <input type = "text" name = "price" size=10>
+           유통기한 : <input type = "text" name = "d_d" size=10>
         <input type = "submit" value="ADD">
 </form>
 
